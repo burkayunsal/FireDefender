@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class ParticleManager : Singleton<ParticleManager>
 {
-
-    [SerializeField] public ParticleSystem explosionPS,MeteorExplosionParticle, confetti;
+    
+    [SerializeField] public ParticleSystem sizeUpgradeParticleSystem,speedUpParticle,explosionPS,meteorExplosionParticle, confetti;
     public void Explode(Vector3 v)
     {
         explosionPS.transform.position = v;
@@ -44,8 +44,9 @@ public class ParticleManager : Singleton<ParticleManager>
 
     public void PlayMeteorParticles(Vector3 v)
     {
-        MeteorExplosionParticle.transform.position = v;
-        MeteorExplosionParticle.Play();
+        if(meteorExplosionParticle == null) return;
+        meteorExplosionParticle.transform.position = v;
+        meteorExplosionParticle.Play();
     }
 
     public void Confetti()

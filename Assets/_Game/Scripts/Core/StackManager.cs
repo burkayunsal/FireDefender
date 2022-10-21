@@ -42,6 +42,10 @@ public class StackManager : Singleton<StackManager>
                 GrainSpawner.I.lsAllGrains.Remove(g);
             }
         }
+        else
+        {
+            PlayerController.I.playerCapacityisFull(true);
+        }
     }
     
     
@@ -66,7 +70,6 @@ public class StackManager : Singleton<StackManager>
                 break;
             }
         }
-
         if (c == null)
         {
             // ALL FULL
@@ -93,6 +96,8 @@ public class StackManager : Singleton<StackManager>
             Grain droppedGrain = c.RemoveLast();
             c.RemoveGrain(droppedGrain);
             droppedGrain.OnDrop(targetPos);
+            PlayerController.I.playerCapacityisFull(false);
+
         }
     }
 
@@ -106,13 +111,21 @@ public class StackManager : Singleton<StackManager>
         for (int i = 0; i < lsCollectedGrains.Count; i++)
         {
             yield return new WaitForSeconds(0.05f);
-
+    
             Coin coin = PoolManager.I.GetObject<Coin>();
             coin.transform.position = transform.position;
             
             SaveLoadManager.AddCoin(1);
             SoundManager.I.PlaySound(SoundName.GoldCollect);
             gameObject.SetActive(false);
+        }
+    }
+
+    public void OnLevelSucceed()
+    {
+        foreach (var carrier in lsActiveCarriers)
+        {
+            carrier.GiveCoin();
         }
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using SBF.Extentions.Vector;
 using UnityEngine;
 
 public class Grain : MonoBehaviour
@@ -15,9 +16,7 @@ public class Grain : MonoBehaviour
     
     [SerializeField] private GameObject[] meshes;
     [SerializeField] private Animator animFresh;
-    private Transform sellPoint;
-    public Color grain_color;
-    
+    [SerializeField] private GameObject leftGrain;
     private GrainState mState = GrainState.Fresh;
     public GrainState State
     {
@@ -37,6 +36,9 @@ public class Grain : MonoBehaviour
                     break;
                 case GrainState.Ash :
                     OnAsh();
+                    break;
+                case GrainState.Collected :
+                    OnCollected();
                     break;
             }
         }
@@ -66,9 +68,12 @@ public class Grain : MonoBehaviour
 
     IEnumerator BurnRoutine()
     {
+        GrainSpawner.I.AddToBurnedList(this);
+        
         float min = LevelHandler.I.GetLevel().minSpreadTime;
         float max = LevelHandler.I.GetLevel().maxSpreadTime;
         yield return new WaitForSeconds(Random.Range(min, max));
+        
         activeRoutine = null;
         BurnAround();
         State = GrainState.Ash;
@@ -79,9 +84,14 @@ public class Grain : MonoBehaviour
         GrainSpawner.I.RemoveFromBurnedList(this);
     }
 
+    void OnCollected()
+    {
+        leftGrain.transform.SetParent(null);
+    }
+
     void BurnAround()
     {
-        RaycastHit[] hits = Physics.SphereCastAll(transform.position, 2f, Vector3.up, 3f, 1 << 8);
+        RaycastHit[] hits = Physics.SphereCastAll(transform.position, 1.5f, Vector3.up, 3f, 1 << 8);
         
         for (int i = 0; i < hits.Length; i++)
         {
@@ -91,7 +101,6 @@ public class Grain : MonoBehaviour
                 if (g.State == GrainState.Fresh)
                 {
                     g.State = GrainState.Burning;
-                    GrainSpawner.I.AddToBurnedList(g);
                 }
             }
         }
@@ -99,11 +108,12 @@ public class Grain : MonoBehaviour
     
     public void OnDrop(Transform target)
     {
-        sellPoint = target;
+        Transform sellPoint = target;
         transform.DOJump(target.position, 3f,1,0.75f).OnComplete(() =>
         {
             Coin coin = PoolManager.I.GetObject<Coin>();
             coin.transform.position = transform.position;
+            coin.CoinAtSellPoint(PlayerController.I.rb.transform.position.WithY(1));
             
             SaveLoadManager.AddCoin(1);
             SoundManager.I.PlaySound(SoundName.GoldCollect);
@@ -112,20 +122,4 @@ public class Grain : MonoBehaviour
             gameObject.SetActive(false);
         });
     }
-
-    public void Move()
-    {
-        State = GrainState.Collected;
-        transform.DOMove(sellPoint.position, .5f).OnComplete(() =>
-        {
-            //SaveLoadManager.AddCoin(1);
-            //SoundManager.I.PlaySound(SoundName.GoldCollect);
-            transform.parent = null;
-            gameObject.SetActive(false);
-        });
-        
-    }
-    
-    
-    
 }

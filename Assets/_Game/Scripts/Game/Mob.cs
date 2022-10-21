@@ -14,7 +14,8 @@ public class Mob : MonoBehaviour
    private Vector3 throwVector, spawnPoint;
 
    private bool startedWalking = false;
-    private bool hasAttacked = false; 
+   private bool hasAttacked = false; 
+   
     public enum AnimStates
     {
         Idle,
@@ -48,10 +49,8 @@ public class Mob : MonoBehaviour
     private void Start()
     {
         spawnPoint = transform.position;
-        StartRunning();
     }
 
-    private bool hasFocusedCam = false;
     void Run()
     {
         Vector3 targetPos = !hasAttacked ? shootPoint.position : spawnPoint;
@@ -61,9 +60,8 @@ public class Mob : MonoBehaviour
 
         float distance = Vector3.Distance(rb.transform.position, targetPos);
 
-        if (distance <= 1.5f && !hasFocusedCam && !CameraController.I.hasSwitched)
+        if (distance <= 1.5f && !SaveLoadManager.HasCamSwitch())
         {
-            hasFocusedCam = true;
             CameraController.I.SetTarget(transform);
         }
         if (distance <= 0.5f && !hasAttacked)
@@ -104,14 +102,20 @@ public class Mob : MonoBehaviour
         a.Fire(throwVector);
         ShowMolotov(a.transform);
         anim.SetTrigger("Throw");
+
+        FireController.I.RemoveMob(this);
     }
 
     void ShowMolotov(Transform t)
     {
-        if (!CameraController.I.hasSwitched)
+        if (!SaveLoadManager.HasCamSwitch())
         {
-            CameraController.I.hasSwitched = true;
+            SaveLoadManager.SetCamSwitchDone();
+            TouchHandler.I.textHidden = false;
+            
+            UIManager.I.ShowText();
             CameraController.I.SetTarget(t);
+            
             TouchHandler.I.OnUp();
             TouchHandler.I.Enable(false);
             PlayerController.I.dragSpeed = 0f;

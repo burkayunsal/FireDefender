@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -11,12 +12,13 @@ public class GrainSpawner : Singleton<GrainSpawner>
     [SerializeField] private Transform pool;
     [SerializeField] private Grain grainPrefab;
     
-    [HideInInspector] public List<Grain> lsBurnedGrains = new List<Grain>();
-    [HideInInspector] public List<Grain> lsAllGrains = new List<Grain>();
+     public List<Grain> lsBurnedGrains = new List<Grain>();
+     public List<Grain> lsAllGrains = new List<Grain>();
 
     public Image progressBar;
     public TextMeshProUGUI textPercentage;
-    bool isFailed = false;
+    bool isFailed, isLevelEnd = false;
+    [SerializeField] private Button button;
 
     [SerializeField] private FireFollower _fireFollower;
     private int counter = 0, totalGrain;
@@ -32,7 +34,20 @@ public class GrainSpawner : Singleton<GrainSpawner>
         }
         totalGrain = lsAllGrains.Count;
     }
-    
+
+    private void Update()
+    {
+        if (lsAllGrains.Count == 0 && !isLevelEnd && GameManager.isRunning)
+        {
+            TouchHandler.I.OnUp();
+            TouchHandler.I.Enable(false);
+            PlayerController.I.ForceStop();
+            StackManager.I.OnLevelSucceed();
+            GameManager.OnLevelCompleted();
+            isLevelEnd = true;
+        }
+    }
+
     public void AddToBurnedList(Grain g)
     {
         if (!lsBurnedGrains.Contains(g))
@@ -63,19 +78,14 @@ public class GrainSpawner : Singleton<GrainSpawner>
         if (lsBurnedGrains.Contains(g))
         {
             lsBurnedGrains.Remove(g);
-            
-            if (lsBurnedGrains.Count != 0) return;
-
-            if (isFailed) return;
-
-            new SBF.Toolkit.DelayedAction(() =>
+            if (lsBurnedGrains.Count == 0)
             {
-                TouchHandler.I.OnUp();
-                TouchHandler.I.Enable(false);
-                PlayerController.I.ForceStop();
-                StackManager.I.StartlevelEndRoutine();
-                GameManager.OnLevelCompleted();
-            }, 10f).Execute(this);
+                _fireFollower.HidePointer();
+                if (FireController.I.lsMobs.Count == 0 && FireController.I.lsMeteors.Count == 0)
+                {
+                    button.gameObject.SetActive(true);
+                }
+            }
         }
     }
     

@@ -29,6 +29,12 @@ public class PlayerTrigger : MonoBehaviour
         {
             SellArea sellArea = other.GetComponent<SellArea>();
             sellArea.OnPlayerEnter();
+            PlayerController.I.EnableLine(false);
+        }
+        else if (other.CompareTag("UpgradeOpen"))
+        {
+            UpgradeOpen uo = other.GetComponent<UpgradeOpen>();
+            uo.OnPlayerEnter(transform.position);
         }
     }
 
@@ -43,6 +49,11 @@ public class PlayerTrigger : MonoBehaviour
         {
             SellArea sellArea = other.GetComponent<SellArea>();
             sellArea.OnPlayerExit();
+        }
+        else if (other.CompareTag("UpgradeOpen"))
+        {
+            UpgradeOpen uo = other.GetComponent<UpgradeOpen>();
+            uo.OnPlayerExit();
         }
     }
 

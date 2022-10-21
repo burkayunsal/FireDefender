@@ -14,7 +14,7 @@ public class PatternCross : LevelGrainPattern
         {
             for (int j = 0; j < sizeX; j++)
             {
-                if (i+j > 15 && i+j < 23 || Mathf.Abs(i-j) < 4)
+                if (i+j > 14 && i+j < 26 || Mathf.Abs(i-j) < 4)
                 {
                     ls.Add(new Vector3(j * distBetweenCrops ,0,i * distBetweenCrops));
                 }

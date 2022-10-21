@@ -25,7 +25,7 @@ public class SaveLoadManager : MonoBehaviour
 
     #endregion
 
-    #region COIN
+    #region VIBRATORR
 
     const string KEY_VIBRATION = "vibrator";
 
@@ -76,8 +76,7 @@ public class SaveLoadManager : MonoBehaviour
     public static int GetSpeedLevel() => PlayerPrefs.GetInt(KEY_SPEED_LEVEL, 0);
 
     #endregion
-    
-    
+
     #region SIZE
 
     const string KEY_MAX_SIZE = "size";
@@ -86,4 +85,30 @@ public class SaveLoadManager : MonoBehaviour
     public static int GetSize() => PlayerPrefs.GetInt(KEY_MAX_SIZE, 0);
 
     #endregion
+    
+    #region UPGRADE_OPEN_COST
+
+    const string KEY_UPGRADE_COST = "cossrfyasfsa";
+
+    const string KEY_UPGRADE_COST_BOOL = "safashkflasş";
+    public static int GetCost() => PlayerPrefs.GetInt(KEY_UPGRADE_COST, 0);
+    public static void IsOpen(bool i) => PlayerPrefs.SetInt(KEY_UPGRADE_COST_BOOL, IsOpen() + ( i ? 1 : 0));
+    public static int IsOpen() => PlayerPrefs.GetInt(KEY_UPGRADE_COST_BOOL, 0);
+    public static void SetCost(int val)
+    {
+        PlayerPrefs.SetInt(KEY_UPGRADE_COST, GetCost() + val);
+    }
+    #endregion
+
+    #region CameraSwitch
+
+    private const string KEY_CAM_SWITCH = "skjdasadasdsd";
+    public static bool HasCamSwitch() => PlayerPrefs.GetInt(KEY_CAM_SWITCH, 0) == 1;
+    public static void SetCamSwitchDone() => PlayerPrefs.SetInt(KEY_CAM_SWITCH, 1);
+
+    #endregion
+    
+    private const string KEY_SELLTUT = "skjdasd";
+    public static bool HasSellTutShown() => PlayerPrefs.GetInt(KEY_SELLTUT, 0) == 1;
+    public static void SetSellTutDone() => PlayerPrefs.SetInt(KEY_SELLTUT, 1);
 }

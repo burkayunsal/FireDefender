@@ -12,7 +12,6 @@ public class CameraController : Singleton<CameraController>
     bool isInitialized = false;
     [SerializeField] private float lerpTime;
 
-    public bool hasSwitched = false;
     private Transform PlayerTransform;
     public void SetTarget(Transform t) => target = t;
 

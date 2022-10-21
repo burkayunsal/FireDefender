@@ -12,7 +12,6 @@ public class UpgradeManager : Singleton<UpgradeManager>
     [SerializeField] TextMeshProUGUI[] txtUpgrade;
     [SerializeField] private GameObject[] coinImages;
 
-    [SerializeField] private ParticleSystem speedUpParticle;
     
     private void Start()
     {
@@ -29,13 +28,15 @@ public class UpgradeManager : Singleton<UpgradeManager>
     public void UpgradeCapactiy()
     {
         {
-            var cost = Configs.Player.upgradeCosts[SaveLoadManager.GetCarrierLevel()];
+            var cost = Configs.Player.vagoonCosts[SaveLoadManager.GetCarrierLevel()];
             if (SaveLoadManager.GetCoin() >= cost)
             {
                 SaveLoadManager.AddCoin(-cost);
                 SaveLoadManager.UpgradeCarrier();
                 
+                PlayerController.I.playerCapacityisFull(false);
                 WriteCapacityText();
+                SoundManager.I.PlaySound(SoundName.Cash);
             } 
         } 
     }
@@ -52,7 +53,7 @@ public class UpgradeManager : Singleton<UpgradeManager>
         }
         else
         {
-            txtCost[0].SetText(Configs.Player.upgradeCosts[SaveLoadManager.GetCarrierLevel()].ToString());
+            txtCost[0].SetText(Configs.Player.vagoonCosts[SaveLoadManager.GetCarrierLevel()].ToString());
             txtLevel[0].SetText("Level " + (SaveLoadManager.GetCarrierLevel() + 1));
         }
     }
@@ -61,14 +62,15 @@ public class UpgradeManager : Singleton<UpgradeManager>
     {
         if (SaveLoadManager.GetSpeedLevel() < Configs.Player.speed.Length)
         {
-            var cost = Configs.Player.upgradeCosts[SaveLoadManager.GetSpeedLevel()];
+            var cost = Configs.Player.speedCosts[SaveLoadManager.GetSpeedLevel()];
             if (SaveLoadManager.GetCoin() >= cost)
             {
                 SaveLoadManager.AddCoin(-cost);
                 SaveLoadManager.IncreaseSpeedLevel();
-                
-                speedUpParticle.Play();
-                
+                PlayerController.I.SetSpeedUpgrades();
+                ParticleManager.I.speedUpParticle.Play();
+                SoundManager.I.PlaySound(SoundName.Cash);
+
                 WriteSpeedText();
             } 
         }
@@ -86,7 +88,7 @@ public class UpgradeManager : Singleton<UpgradeManager>
         }
         else
         {
-            txtCost[1].SetText(Configs.Player.upgradeCosts[SaveLoadManager.GetSpeedLevel()].ToString());
+            txtCost[1].SetText(Configs.Player.speedCosts[SaveLoadManager.GetSpeedLevel()].ToString());
             txtLevel[1].SetText("Level " + (SaveLoadManager.GetSpeedLevel() + 1));
         }
     }
@@ -95,12 +97,15 @@ public class UpgradeManager : Singleton<UpgradeManager>
     {
         if (SaveLoadManager.GetSize() < Configs.Player.size.Length)
         {
-            var cost = Configs.Player.upgradeCosts[SaveLoadManager.GetSize()];
+            var cost = Configs.Player.sizeCosts[SaveLoadManager.GetSize()];
             if (SaveLoadManager.GetCoin() >= cost)
             {
                 SaveLoadManager.AddCoin(-cost);
                 SaveLoadManager.IncreaseSize();
                 PlayerController.I.SetSize();
+                
+                ParticleManager.I.sizeUpgradeParticleSystem.Play();
+                SoundManager.I.PlaySound(SoundName.Cash);
 
                 WriteSizeText();
             } 
@@ -120,7 +125,7 @@ public class UpgradeManager : Singleton<UpgradeManager>
         }
         else
         {
-            txtCost[2].SetText( Configs.Player.upgradeCosts[SaveLoadManager.GetSize()].ToString());
+            txtCost[2].SetText( Configs.Player.sizeCosts[SaveLoadManager.GetSize()].ToString());
             txtLevel[2].SetText("Level " + (SaveLoadManager.GetSize() + 1));
         }
     }

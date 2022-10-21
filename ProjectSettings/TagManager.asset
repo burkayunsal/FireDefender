@@ -10,6 +10,7 @@ TagManager:
   - Fire
   - Effects
   - Ground
+  - UpgradeOpen
   layers:
   - Default
   - TransparentFX

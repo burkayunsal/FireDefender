@@ -18,7 +18,7 @@ public class SellArea : MonoBehaviour
         while (!stopCoroutine)
         {
             StackManager.I.Drop(SellPoint);
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.025f);
         }
     }
 

@@ -16,6 +16,7 @@ public class GameManager : Singleton<GameManager>
         TouchHandler.I.OnGameStarted();
         PlayerController.I.OnGameStarted();
         CameraController.I.OnGameStarted();
+        LevelHandler.I.OnGameStarted();
         isRunning = true;
     }
     

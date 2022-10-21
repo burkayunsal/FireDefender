@@ -29,7 +29,7 @@ public class UIManager : Singleton<UIManager>
     public void Initialize(bool isButtonDerived)
     {
         btn.play.gameObject.SetActive(!isButtonDerived);
-        img.taptoStart.gameObject.SetActive(!isButtonDerived);
+        img.taptoStart.gameObject.SetActive(isButtonDerived);
         FadeInAndOutPanels(pnl.mainMenu);
     }
 
@@ -49,8 +49,15 @@ public class UIManager : Singleton<UIManager>
         FadeInAndOutPanels(pnl.fail);
     }
 
+    public void SkipLevel()
+    {
+        GameManager.OnLevelCompleted();
+        StackManager.I.OnLevelSucceed();
+    }
+
     public void OnSuccess(bool hasPrize = true)
     {
+        
         if(hasPrize)
         {
             btn.nextLevel.gameObject.SetActive(false);
@@ -201,6 +208,16 @@ public class UIManager : Singleton<UIManager>
         pnl.upgradePanel.blocksRaycasts = false;
         pnl.upgradePanel.interactable = false;
     }
+
+    public void ShowText()
+    {
+        txt.howToPlay.gameObject.SetActive(true);
+    }
+
+    public void HideText()
+    {
+        txt.howToPlay.gameObject.SetActive(false);    
+    }
     
     public void UpdateCoinTxt()
     {
@@ -229,6 +246,6 @@ public class UIManager : Singleton<UIManager>
     [System.Serializable]
     public class Texts
     {
-        public TextMeshProUGUI level, coinCount,amazing;
+        public TextMeshProUGUI level, coinCount,amazing,howToPlay;
     }
 }

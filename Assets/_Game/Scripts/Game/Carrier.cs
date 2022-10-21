@@ -83,4 +83,9 @@ public class Carrier : MonoBehaviour
     {
         return lsGrains.Count < Configs.Player.carrierCapacity;
     }
+
+    public void GiveCoin()
+    {
+        SaveLoadManager.AddCoin(lsGrains.Count);
+    }
 }

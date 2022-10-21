@@ -16,7 +16,7 @@ public class LevelHandler : Singleton<LevelHandler>
 
         TouchHandler.I.Initialize(TouchHandler.I.useJoystick ? TouchHandler.TouchTypes.Joystick : TouchHandler.TouchTypes.Core, isButtonDerived: true, isStart: true);
         
-        GameManager.OnStartGame();
+        //GameManager.OnStartGame();
 
     }
 
@@ -29,6 +29,11 @@ public class LevelHandler : Singleton<LevelHandler>
         crntLevel = Instantiate(testLevel != null ? testLevel : allLevels[levelID], pool);
 
         GameManager.canStart = true;
+    }
+
+    public void OnGameStarted()
+    {
+        crntLevel.OnGameStarted();
     }
 
 }

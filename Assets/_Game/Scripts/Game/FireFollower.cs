@@ -41,6 +41,13 @@ public class FireFollower : MonoBehaviour
         
     }
 
+    public void HidePointer()
+    {
+        target = null;
+        Pointer.gameObject.SetActive(false);
+
+    }
+    
     void HandleRotation(bool isInViewport)
     {
         if (isInViewport)
