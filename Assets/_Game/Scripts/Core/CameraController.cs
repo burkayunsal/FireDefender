@@ -14,12 +14,12 @@ public class CameraController : Singleton<CameraController>
 
     private Transform PlayerTransform;
     public void SetTarget(Transform t) => target = t;
-
     public void SetOffset(Vector3 endVal) => offset = endVal;
     public void SetOffset(Vector3 endVal, float time)
     {
         DOTween.To(() => offset, (x) => offset = x, endVal, time).SetEase(Ease.Linear);
     }
+    
 
     delegate void OnUpdate();
     OnUpdate onUpdate;
@@ -57,7 +57,10 @@ public class CameraController : Singleton<CameraController>
 
     void FollowTarget()
     {
-        transform.position = target.position + offset;
+        if (target)
+        {
+            transform.position = target.position + offset;
+        }
     }
 
     void FollowWithLerp()
@@ -67,6 +70,22 @@ public class CameraController : Singleton<CameraController>
 
     public void SetPlayerAsTarget()
     {
-        target = PlayerTransform;
+        target = null;
+        transform.DOMove(PlayerTransform.position + offset, 0.5f).OnComplete(() =>
+        {
+            target = PlayerTransform;
+        });
+    }
+
+    public void MoveCamera(Vector3 targetPos,Transform t)
+    {
+        target = null;
+        transform.DOMove(targetPos + offset, .5f).SetEase(Ease.Linear).OnComplete(() =>
+        {
+            if (t != null)
+            {
+                target = t;
+            }
+        });
     }
 }

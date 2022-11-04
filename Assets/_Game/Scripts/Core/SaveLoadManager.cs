@@ -102,10 +102,13 @@ public class SaveLoadManager : MonoBehaviour
 
     #region CameraSwitch
 
-    private const string KEY_CAM_SWITCH = "skjdasadasdsd";
-    public static bool HasCamSwitch() => PlayerPrefs.GetInt(KEY_CAM_SWITCH, 0) == 1;
-    public static void SetCamSwitchDone() => PlayerPrefs.SetInt(KEY_CAM_SWITCH, 1);
+    private const string KEY_MOB_CAM_SWITCH = "skjdasadasdsd";
+    public static bool HasCamSwitchToMob() => PlayerPrefs.GetInt(KEY_MOB_CAM_SWITCH, 0) == 1;
+    public static void SetMobCamSwitchDone() => PlayerPrefs.SetInt(KEY_MOB_CAM_SWITCH, 1);
 
+    private const string KEY_MET_CAM_SWITCH = "skjdasajhsgfkjasfadasdsd";
+    public static bool HasCamSwitchToMeteor() => PlayerPrefs.GetInt(KEY_MET_CAM_SWITCH, 0) == 1;
+    public static void SetMetCamSwitchDone() => PlayerPrefs.SetInt(KEY_MET_CAM_SWITCH, 1);
     #endregion
     
     private const string KEY_SELLTUT = "skjdasd";

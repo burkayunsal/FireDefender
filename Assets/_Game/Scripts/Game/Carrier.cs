@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-public class Carrier : MonoBehaviour
+public class Carrier : MonoBehaviour 
 {
     [SerializeField] private Transform prevWagon,prevWagonPin,pool;
     [SerializeField] private float rotLerpTimer;
-    private List<Grain> lsGrains = new List<Grain>();
+    public List<Grain> lsGrains = new List<Grain>();
     public ParticleSystem[] dustParticles;
     
 
@@ -44,6 +44,7 @@ public class Carrier : MonoBehaviour
             lsGrains.Add(g);
             StackManager.I.lsCollectedGrains.Add(g);
             PlaceGrain(g);
+            StackManager.I.CheckCapacity(this);
         }
     }
 
@@ -66,6 +67,10 @@ public class Carrier : MonoBehaviour
         {
             lsGrains.Remove(g);
             StackManager.I.lsCollectedGrains.Remove(g);
+            if (StackManager.I.lsFullCarriers.Contains(this))
+            {
+                StackManager.I.lsFullCarriers.Remove(this);
+            }
         }
     }
 

@@ -209,15 +209,15 @@ public class UIManager : Singleton<UIManager>
         pnl.upgradePanel.interactable = false;
     }
 
-    public void ShowText()
-    {
-        txt.howToPlay.gameObject.SetActive(true);
-    }
+    // public void ShowText()
+    // {
+    //     txt.howToPlay.gameObject.SetActive(true);
+    // }
 
-    public void HideText()
-    {
-        txt.howToPlay.gameObject.SetActive(false);    
-    }
+    // public void HideText()
+    // {
+    //     txt.howToPlay.gameObject.SetActive(false);    
+    // }
     
     public void UpdateCoinTxt()
     {
@@ -246,6 +246,6 @@ public class UIManager : Singleton<UIManager>
     [System.Serializable]
     public class Texts
     {
-        public TextMeshProUGUI level, coinCount,amazing,howToPlay;
+        public TextMeshProUGUI level, coinCount,amazing;
     }
 }

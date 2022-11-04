@@ -6,7 +6,8 @@ public enum SoundName
     Explosion = 2,
     Molotov = 3,
     Cash = 4,
-    UpgradeOpen = 5
+    UpgradeOpen = 5,
+    Lightning = 6
 }
 
 public class SoundManager : Singleton<SoundManager>

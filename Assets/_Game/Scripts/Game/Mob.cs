@@ -60,9 +60,9 @@ public class Mob : MonoBehaviour
 
         float distance = Vector3.Distance(rb.transform.position, targetPos);
 
-        if (distance <= 1.5f && !SaveLoadManager.HasCamSwitch())
+        if (distance <= 3f && !SaveLoadManager.HasCamSwitchToMob())
         {
-            CameraController.I.SetTarget(transform);
+            CameraController.I.MoveCamera(transform.position,null);
         }
         if (distance <= 0.5f && !hasAttacked)
         {
@@ -108,18 +108,24 @@ public class Mob : MonoBehaviour
 
     void ShowMolotov(Transform t)
     {
-        if (!SaveLoadManager.HasCamSwitch())
+        if (!SaveLoadManager.HasCamSwitchToMob())
         {
-            SaveLoadManager.SetCamSwitchDone();
-            TouchHandler.I.textHidden = false;
+            SaveLoadManager.SetMobCamSwitchDone();
             
-            UIManager.I.ShowText();
+           // UIManager.I.ShowText();
             CameraController.I.SetTarget(t);
             
+            new SBF.Toolkit.DelayedAction(ShowPlayer, 4f).Execute(GameManager.I);
             TouchHandler.I.OnUp();
             TouchHandler.I.Enable(false);
             PlayerController.I.dragSpeed = 0f;
         }
+    }
+
+    void ShowPlayer()
+    {
+        CameraController.I.SetPlayerAsTarget();
+        TouchHandler.I.Enable(true);
     }
 }
     

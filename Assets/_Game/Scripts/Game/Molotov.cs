@@ -24,7 +24,6 @@ public class Molotov : PoolObject
         gameObject.SetActive(true);
         new SBF.Toolkit.DelayedAction( () =>
         {
-            SwitchCameraToPlayer();
             OnDeactivate();
         },4f).Execute(GameManager.I);
     }
@@ -42,14 +41,8 @@ public class Molotov : PoolObject
             ParticleManager.I.Explode(transform.position);
             SoundManager.I.PlaySound(SoundName.Molotov);
             Vibrator.Haptic();
-            new SBF.Toolkit.DelayedAction(SwitchCameraToPlayer, 4f).Execute(GameManager.I);
             OnDeactivate();
         }
     }
-
-    void SwitchCameraToPlayer()
-    {
-        CameraController.I.SetPlayerAsTarget();
-        TouchHandler.I.Enable(true);
-    }
+    
 }

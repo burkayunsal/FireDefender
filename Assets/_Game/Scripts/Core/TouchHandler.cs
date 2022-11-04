@@ -137,7 +137,6 @@ public class TouchHandler : Singleton<TouchHandler>
 
     #endregion
 
-    public bool textHidden = true;
     
     #region JOYSTICK
     void JoystickDown()
@@ -145,12 +144,7 @@ public class TouchHandler : Singleton<TouchHandler>
         fp = Input.mousePosition;
         img_outerCircle.transform.position = fp;
         img_outerCircle.gameObject.SetActive(true);
-
-        if (!textHidden)
-        {
-            UIManager.I.HideText();
-            textHidden = true;
-        }
+        
     }
     void JoystickDrag()
     {

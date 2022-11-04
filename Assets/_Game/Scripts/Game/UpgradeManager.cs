@@ -47,7 +47,7 @@ public class UpgradeManager : Singleton<UpgradeManager>
         {
             txtLevel[0].SetText("");
             txtCost[0].SetText("");
-            txtUpgrade[0].SetText(" FULL ");
+            txtUpgrade[0].SetText(" MAX ");
             coinImages[0].SetActive(false);
             UIManager.I.btn.capacity.interactable = false;
         }
@@ -82,7 +82,7 @@ public class UpgradeManager : Singleton<UpgradeManager>
         {
             txtLevel[1].SetText("");
             txtCost[1].SetText("");
-            txtUpgrade[1].SetText(" FULL ");
+            txtUpgrade[1].SetText(" MAX ");
             coinImages[1].SetActive(false);
             UIManager.I.btn.speed.interactable = false;
         }
@@ -119,7 +119,7 @@ public class UpgradeManager : Singleton<UpgradeManager>
         {
             txtLevel[2].SetText("");
             txtCost[2].SetText("");
-            txtUpgrade[2].SetText(" FULL ");
+            txtUpgrade[2].SetText(" MAX ");
             coinImages[2].SetActive(false);
             UIManager.I.btn.size.interactable = false;
         }

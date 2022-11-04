@@ -11,6 +11,9 @@ TagManager:
   - Effects
   - Ground
   - UpgradeOpen
+  - Dirt
+  - Start
+  - CameraSwitchTrigger
   layers:
   - Default
   - TransparentFX

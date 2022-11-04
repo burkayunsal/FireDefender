@@ -17,6 +17,7 @@ public class Grain : MonoBehaviour
     [SerializeField] private GameObject[] meshes;
     [SerializeField] private Animator animFresh;
     [SerializeField] private GameObject leftGrain;
+    
     private GrainState mState = GrainState.Fresh;
     public GrainState State
     {
@@ -72,7 +73,15 @@ public class Grain : MonoBehaviour
         
         float min = LevelHandler.I.GetLevel().minSpreadTime;
         float max = LevelHandler.I.GetLevel().maxSpreadTime;
-        yield return new WaitForSeconds(Random.Range(min, max));
+        if (PlayerController.I.isInGround)
+        {
+            yield return new WaitForSeconds(Random.Range(min, max));
+        }
+        else
+        {
+            yield return new WaitForSeconds(Random.Range(min * 2, max * 2));
+        }
+        
         
         activeRoutine = null;
         BurnAround();
@@ -91,7 +100,7 @@ public class Grain : MonoBehaviour
 
     void BurnAround()
     {
-        RaycastHit[] hits = Physics.SphereCastAll(transform.position, 1.5f, Vector3.up, 3f, 1 << 8);
+        RaycastHit[] hits = Physics.SphereCastAll(transform.position, 2f, Vector3.up, 3f, 1 << 8);
         
         for (int i = 0; i < hits.Length; i++)
         {

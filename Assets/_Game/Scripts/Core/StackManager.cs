@@ -9,7 +9,7 @@ public class StackManager : Singleton<StackManager>
     [SerializeField] private Carrier[] allCarriers;
     public List<Carrier> lsActiveCarriers = new List<Carrier>();
     public List<Grain> lsCollectedGrains = new List<Grain>();
-
+    public List<Carrier> lsFullCarriers = new List<Carrier>();
     private void Start()
     {
         InitCarriers();
@@ -24,7 +24,10 @@ public class StackManager : Singleton<StackManager>
             if (i <= lvl)
             {
                 allCarriers[i].gameObject.SetActive(true);
-                lsActiveCarriers.Add(allCarriers[i]);
+                if (!lsActiveCarriers.Contains(allCarriers[i]))
+                {
+                    lsActiveCarriers.Add(allCarriers[i]);
+                }
             }
         }
     }
@@ -42,13 +45,19 @@ public class StackManager : Singleton<StackManager>
                 GrainSpawner.I.lsAllGrains.Remove(g);
             }
         }
-        else
+    }
+
+    public void CheckCapacity(Carrier c)
+    {
+        if (c.lsGrains.Count == Configs.Player.carrierCapacity)
         {
-            PlayerController.I.playerCapacityisFull(true);
+            lsFullCarriers.Add(c);
+            if (lsFullCarriers.Count == lsActiveCarriers.Count)
+            {
+                PlayerController.I.playerCapacityisFull(true);
+            }
         }
     }
-    
-    
 
     public bool HasSpace()
     {
@@ -98,26 +107,6 @@ public class StackManager : Singleton<StackManager>
             droppedGrain.OnDrop(targetPos);
             PlayerController.I.playerCapacityisFull(false);
 
-        }
-    }
-
-    public void StartlevelEndRoutine()
-    {
-        StartCoroutine(CollectedRoutine());
-    }
-
-    IEnumerator CollectedRoutine()
-    {
-        for (int i = 0; i < lsCollectedGrains.Count; i++)
-        {
-            yield return new WaitForSeconds(0.05f);
-    
-            Coin coin = PoolManager.I.GetObject<Coin>();
-            coin.transform.position = transform.position;
-            
-            SaveLoadManager.AddCoin(1);
-            SoundManager.I.PlaySound(SoundName.GoldCollect);
-            gameObject.SetActive(false);
         }
     }
 

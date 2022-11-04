@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
     public static bool canStart = false, isRunning = false;
+    
 
     public static void OnStartGame()
     {
@@ -11,12 +13,10 @@ public class GameManager : Singleton<GameManager>
         canStart = false;
 
         //TODO SEND ANALYTICS EVENT
-
         UIManager.I.OnGameStarted();
         TouchHandler.I.OnGameStarted();
         PlayerController.I.OnGameStarted();
         CameraController.I.OnGameStarted();
-        LevelHandler.I.OnGameStarted();
         isRunning = true;
     }
     

@@ -5,6 +5,7 @@ public class PlayerController : Singleton<PlayerController>
     [HideInInspector] public float Speed;
     [HideInInspector] public float dragSpeed = 0f;
 
+    [SerializeField] private Animator anim;
     [SerializeField] public Rigidbody rb;
     [SerializeField] private SkinnedMeshRenderer boundarySkinMesh;
     [SerializeField] private MeshRenderer[] harvesterSkinMeshes;
@@ -15,11 +16,13 @@ public class PlayerController : Singleton<PlayerController>
     public ParticleSystem[] plyayerDustParticles;
     [SerializeField] private GameObject FullText;
 
+    public bool isInGround;
     public void OnGameStarted()
     {
+        anim.SetFloat("Speed", 0.7f);
+        rb.isKinematic = false;
     }
-
-    public Vector3 GetPosition() => transform.position;
+    
     public void ForceStop()
     {
         dragSpeed = 0f;
@@ -54,11 +57,6 @@ public class PlayerController : Singleton<PlayerController>
         rb.velocity = rb.transform.forward * Speed * dragSpeed;
     }
 
-    public void Stop()
-    {
-        rb.velocity = Vector3.zero;
-    }
-
     public void Rotate(Quaternion rot)
     {
         rb.rotation = rot;
@@ -72,10 +70,6 @@ public class PlayerController : Singleton<PlayerController>
             harvesterSkinMeshes[i].gameObject.SetActive(i == SaveLoadManager.GetSize());
         }
         boundarySkinMesh.SetBlendShapeWeight(0,sizeValue);
-
-        //var sizeMultiplier = (sizeValue / 100f) + 1;
-        //_collider.radius = initialRadius * sizeMultiplier;
-        //_collider.height = initialHeight * sizeMultiplier;
     }
 
     public void SetSpeedUpgrades()

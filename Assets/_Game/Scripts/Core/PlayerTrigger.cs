@@ -36,6 +36,15 @@ public class PlayerTrigger : MonoBehaviour
             UpgradeOpen uo = other.GetComponent<UpgradeOpen>();
             uo.OnPlayerEnter(transform.position);
         }
+        else if (other.CompareTag("Dirt"))
+        {
+            PlayerController.I.isInGround = true;
+        }
+        else if (other.CompareTag("Start"))
+        {
+            LevelHandler.I.OnGameStarted();
+            other.gameObject.SetActive(false);
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -54,6 +63,10 @@ public class PlayerTrigger : MonoBehaviour
         {
             UpgradeOpen uo = other.GetComponent<UpgradeOpen>();
             uo.OnPlayerExit();
+        }
+        else if (other.CompareTag("Dirt"))
+        {
+            PlayerController.I.isInGround = false;
         }
     }
 

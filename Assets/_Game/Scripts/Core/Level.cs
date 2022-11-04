@@ -9,6 +9,7 @@ public class Level : MonoBehaviour
     public float minSpreadTime, maxSpreadTime;
     [SerializeField] private MeteorController mc;
     [SerializeField] private MobController _mobController;
+    [SerializeField] private LightningController lc;
     private void Start()
     {
         SpawnGrains();
@@ -27,6 +28,11 @@ public class Level : MonoBehaviour
         if (_mobController)
         {
             _mobController.OnGameStarted();
+        }
+
+        if (lc)
+        {
+            lc.OnGameStarted();
         }
     }
 }
